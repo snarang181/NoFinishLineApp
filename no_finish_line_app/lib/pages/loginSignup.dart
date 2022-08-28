@@ -60,7 +60,7 @@ class _LoginSignupState extends State<LoginSignup> {
                         height: 10,
                       ),
                       Text(
-                        "Rest, don't be the Best",
+                        "Rest and don't be the Best",
                         style: TextStyle(color: THEME_COLOR, fontSize: 18),
                         textAlign: TextAlign.center,
                       ),

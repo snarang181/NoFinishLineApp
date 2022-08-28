@@ -3,6 +3,7 @@ import 'package:no_finish_line_app/pages/loginScreen.dart';
 import '../pages/createUser.dart';
 import '../utils/constants.dart';
 import '../pages/loginSignup.dart';
+import '../pages/forgotPassword.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         "/loginScreen": (context) => LoginScreen(),
         "/createUser": (BuildContext context) => const CreateUser(),
         "/loginSignup": (BuildContext context) => const LoginSignup(),
+        "/forgotPassword": (BuildContext context) => const ForgotPassword(),
       },
     );
   }
