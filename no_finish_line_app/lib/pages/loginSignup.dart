@@ -37,11 +37,11 @@ class _LoginSignupState extends State<LoginSignup> {
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 60.0,
-                    bottom: 20.0,
+                    bottom: 30.0,
                   ),
                   child: Image.asset(
-                      "/Users/samarthnarang/Desktop/NoFinishLineApp/no_finish_line_app/assets/images/keep_pushing.jpg",
-                      width: screen_width * 0.7),
+                      "/Users/samarthnarang/Desktop/NoFinishLineApp/no_finish_line_app/assets/images/no_end.jpeg",
+                      width: screen_width * 0.8),
                 ),
                 Container(
                   width: screen_width,
