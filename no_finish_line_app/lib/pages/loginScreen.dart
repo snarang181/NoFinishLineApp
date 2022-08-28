@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
           child: GestureDetector(
               onTap: () => Navigator.pushNamed(context, '/createUser'),
-              child: Text('LoginScreen'))),
+              child: Text('Login Screen Goes Here'))),
     );
   }
 }

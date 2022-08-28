@@ -581,7 +581,9 @@ class _CreateUserState extends State<CreateUser> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         // first = true;
-        storage.setItem('user_id', jsonDecode(response.body)['userID']);
+        await storage.setItem('user_id', jsonDecode(response.body)['userID']);
+        await storage.setItem(
+            'auth_token', jsonDecode(response.body)['auth_token']);
         Navigator.pop(context);
       } else if (response.statusCode == 401) {
         const snackBar = SnackBar(
