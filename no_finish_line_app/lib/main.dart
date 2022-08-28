@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:no_finish_line_app/pages/loginScreen.dart';
 import '../pages/createUser.dart';
+import '../utils/constants.dart';
+import '../pages/loginSignup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +16,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const LoginSignup(),
       routes: {
         "/loginScreen": (context) => LoginScreen(),
         "/createUser": (BuildContext context) => const CreateUser(),
+        "/loginSignup": (BuildContext context) => const LoginSignup(),
       },
     );
   }

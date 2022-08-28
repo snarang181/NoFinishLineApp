@@ -99,11 +99,11 @@ class _CreateUserState extends State<CreateUser> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
                     Text(
-                      'Welcome to NoFinishLine',
+                      'You are just getting started',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: THEME_COLOR,
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                          fontSize: 18,
                           fontFamily: "Lato"),
                     ),
                   ],
