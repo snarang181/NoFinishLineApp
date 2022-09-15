@@ -13,6 +13,7 @@ class WorkoutFeed extends StatefulWidget {
 }
 
 List workoutList = [];
+bool data_received = false;
 
 class _WorkoutFeedState extends State<WorkoutFeed> {
   double screen_height = 0.0;
@@ -20,66 +21,114 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
 
   @override
   void initState() {
-    get_workout_past_data();
     super.initState();
   }
 
   @override
-  dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    get_workout_past_data();
     screen_height = MediaQuery.of(context).size.height;
     screen_width = MediaQuery.of(context).size.width;
     final List<String> appBarItems = [
       'Workout History',
-      'Food History',
+      'Workout Stats',
     ];
-    return DefaultTabController(
-      length: appBarItems.length,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: THEME_COLOR,
-          toolbarHeight: 0,
-          bottom: TabBar(
-            tabs: appBarItems
-                .map((e) => Tab(
-                      text: e,
-                    ))
-                .toList(),
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            workoutList.length == 0
-                ? Center(
-                    child: Text('No Workouts'),
-                  )
-                : ListView.builder(
-                    itemCount: workoutList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(workoutList[index]['workout_name']),
-                          subtitle: Text(
-                              workoutList[index]['workout_date'].split(" ")[0] +
-                                  " " +
-                                  workoutList[index]['workout_calories_burnt']
-                                      .toString() +
-                                  " Calories"),
-                        ),
-                      );
-                    },
-                  ),
-            Center(
-              child: Text('Food History'),
+
+    return !data_received
+        ? const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(backgroundColor: THEME_COLOR),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : DefaultTabController(
+            length: appBarItems.length,
+            child: Scaffold(
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, bottom: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(
+                      backgroundColor: THEME_COLOR,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/newWorkout");
+                      },
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
+              ),
+              appBar: AppBar(
+                backgroundColor: THEME_COLOR,
+                toolbarHeight: 0,
+                bottom: TabBar(
+                  tabs: appBarItems
+                      .map((e) => Tab(
+                            text: e,
+                          ))
+                      .toList(),
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  workoutList.isEmpty
+                      ? const Center(
+                          child:
+                              Text('No workouts logged, let\'s get started!'),
+                        )
+                      : SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: workoutList.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      String workout_id =
+                                          workoutList[index]['workout_id'];
+                                    },
+                                    child: Card(
+                                      elevation: 5.0,
+                                      child: ListTile(
+                                        title: Text(
+                                          workoutList[index]['workout_name'],
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Text(workoutList[index]
+                                                    ['workout_date']
+                                                .split(" ")[0] +
+                                            " " +
+                                            "Calories: " +
+                                            workoutList[index]
+                                                    ['workout_calories_burnt']
+                                                .toString() +
+                                            " " +
+                                            "Duration: " +
+                                            workoutList[index]
+                                                    ['workout_duration']
+                                                .toString() +
+                                            " minutes"),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                  Center(
+                    child: Text('Workout Stats Here'),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 
   void get_workout_past_data() async {
@@ -101,6 +150,7 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       workoutList = data['message'];
+      data_received = true;
       setState(() {});
     } else {
       const snackBar = SnackBar(
