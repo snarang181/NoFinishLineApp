@@ -319,8 +319,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (temp_flag) {
       if (_passwordController.text.isNotEmpty && passValid) {
-        // showLoadingConst(context);
-        // post_data(); -> api call
+        showLoadingConst(context);
+        workout_data();
       } else {
         const snackBar = SnackBar(
           content: Text('The password field is mandatory'),
@@ -352,5 +352,67 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     passValid = true;
     return null;
+  }
+
+  Future<void> workout_data() async {
+    final LocalStorage storage = LocalStorage('user_data');
+    try {
+      final http.Response response = await http
+          .post(Uri.parse(API_BASE_URL + '/user/login'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode(<String, String>{
+                'user_id': __emailController.text.toString().toLowerCase(),
+                'auth_key': API_AUTH_KEY,
+                'password': _passwordController.text.toString()
+              }))
+          .timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          return http.Response('Server Timeout', 500);
+        },
+      );
+      print(response.body);
+      Navigator.pop(context);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+
+        await storage.setItem('user_id', jsonDecode(response.body)['userID']);
+        await storage.setItem(
+            'auth_token', jsonDecode(response.body)['auth_token']);
+        Navigator.popAndPushNamed(context, "/workoutFeed",
+            arguments: {'userid': jsonDecode(response.body)['userID']});
+      } else if (response.statusCode == 401) {
+        const snackBar = SnackBar(
+          content: Text('Incorrect Password'),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 2),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (response.statusCode == 403) {
+        const snackBar = SnackBar(
+          content: Text('No account associated with these credentials'),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 2),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        const snackBar = SnackBar(
+          content: Text('Something went wrong'),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 2),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      const snackBar = SnackBar(
+        content: Text('Something went wrong, error caught'),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }

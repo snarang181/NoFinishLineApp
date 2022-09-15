@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:no_finish_line_app/pages/loginScreen.dart';
@@ -43,7 +45,7 @@ class _LoginSignupState extends State<LoginSignup> {
                       "/Users/samarthnarang/Desktop/NoFinishLineApp/no_finish_line_app/assets/images/no_end.jpeg",
                       width: screen_width * 0.8),
                 ),
-                Container(
+                SizedBox(
                   width: screen_width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +62,7 @@ class _LoginSignupState extends State<LoginSignup> {
                         height: 10,
                       ),
                       Text(
-                        "Rest and don't be the Best",
+                        "You Snooze, You Lose",
                         style: TextStyle(color: THEME_COLOR, fontSize: 18),
                         textAlign: TextAlign.center,
                       ),

@@ -4,6 +4,7 @@ import '../pages/createUser.dart';
 import '../utils/constants.dart';
 import '../pages/loginSignup.dart';
 import '../pages/forgotPassword.dart';
+import '../pages/workoutFeed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         "/createUser": (BuildContext context) => const CreateUser(),
         "/loginSignup": (BuildContext context) => const LoginSignup(),
         "/forgotPassword": (BuildContext context) => const ForgotPassword(),
+        "/workoutFeed": (BuildContext context) => const WorkoutFeed(),
       },
     );
   }
