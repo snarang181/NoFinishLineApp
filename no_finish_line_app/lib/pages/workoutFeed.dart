@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/constants.dart';
@@ -52,6 +53,7 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
                     FloatingActionButton(
                       backgroundColor: THEME_COLOR,
                       onPressed: () {
+                        setState(() {});
                         Navigator.pushNamed(context, "/newWorkout");
                       },
                       child: const Icon(Icons.add),
@@ -90,6 +92,11 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
                                     onTap: () {
                                       String workout_id =
                                           workoutList[index]['workout_id'];
+                                    },
+                                    onLongPress: () {
+                                      _showCupertinoDialog(
+                                          workoutList[index]['workout_id'],
+                                          index);
                                     },
                                     child: Card(
                                       elevation: 5.0,
@@ -160,5 +167,72 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  void delete_workout(String workout_id, int index) async {
+    showLoadingConst(context);
+    final LocalStorage storage = LocalStorage('user_data');
+    await storage.ready;
+    String user_id = storage.getItem('user_id');
+    final http.Response response = await http
+        .post(Uri.parse(API_BASE_URL + '/user/delete_workout'),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(<String, String>{
+              'auth_key': API_AUTH_KEY,
+              'user_id': user_id,
+              'workout_id': workout_id,
+            }))
+        .timeout(const Duration(seconds: 30), onTimeout: () {
+      return http.Response('Server Timeout', 500);
+    });
+    if (response.statusCode == 200) {
+      workoutList.removeAt(index);
+      setState(() {});
+      Navigator.pop(context);
+      const snackBar = SnackBar(
+        content: Text('Workout deleted successfully'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Could not delete workout, please try again'),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  void _showCupertinoDialog(String workout_id, int index) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Delete Workout'),
+            content:
+                const Text('Are you sure you want to delete this workout?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('No')),
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.red,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  delete_workout(workout_id, index);
+                },
+                child: const Text('Delete'),
+              )
+            ],
+          );
+        });
   }
 }

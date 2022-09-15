@@ -4,6 +4,7 @@ import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
+import 'workoutFeed.dart';
 
 class NewWorkout extends StatefulWidget {
   const NewWorkout({Key? key}) : super(key: key);
@@ -146,6 +147,8 @@ class _NewWorkoutState extends State<NewWorkout> {
   }
 
   void log_workout_data() async {
+    showLoadingConst(context);
+    data_received = false;
     final LocalStorage storage = LocalStorage('user_data');
     await storage.ready;
     String user_id = storage.getItem('user_id');
@@ -166,6 +169,7 @@ class _NewWorkoutState extends State<NewWorkout> {
       return http.Response('Server Timeout', 500);
     });
     if (response.statusCode == 200) {
+      Navigator.pop(context);
       var data = jsonDecode(response.body);
       const snackBar = SnackBar(
         content: Text('Workout Logged Successfully'),
@@ -173,8 +177,7 @@ class _NewWorkoutState extends State<NewWorkout> {
         duration: Duration(seconds: 2),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.pop(context);
-      Navigator.pop(context);
+      Navigator.pushNamed(context, "/workoutFeed");
     } else {
       const snackBar = SnackBar(
         content: Text('Server Error, please try again'),
@@ -206,7 +209,6 @@ class _NewWorkoutState extends State<NewWorkout> {
         duration: Duration(seconds: 2),
       ));
     } else {
-      showLoadingConst(context);
       log_workout_data();
     }
   }
