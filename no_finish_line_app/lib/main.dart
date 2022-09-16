@@ -4,12 +4,14 @@ import '../pages/createUser.dart';
 import '../utils/constants.dart';
 import '../pages/loginSignup.dart';
 import '../pages/forgotPassword.dart';
-import '../pages/workoutFeed.dart';
+import 'pages/workoutFeed.dart';
 import '../pages/newWorkout.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [routeObserver],
       home: const LoginSignup(),
       routes: {
         "/loginScreen": (context) => const LoginScreen(),
