@@ -167,6 +167,7 @@ class _ViewWorkoutState extends State<ViewWorkout> {
               'workout_duration': _workoutDuration.text.toString(),
               'workout_calories_burnt': _workoutCalories.text.toString(),
               'workout_notes': _workoutDescription.text.toString(),
+              'workout_date': arg['workout_date'].toString(),
             }))
         .timeout(const Duration(seconds: 30), onTimeout: () {
       return http.Response('Server Timeout', 500);

@@ -6,7 +6,6 @@ import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
-import 'workoutStats.dart';
 import '../main.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -30,6 +29,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
 
   var stats = {};
   bool statsReceived = false;
+  bool statsEmpty = false;
   bool pastWorkoutsReceived = false;
   Map<String, double> workout_map = {};
 
@@ -260,57 +260,66 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   }
 
   Widget statsPage() {
-    return Scaffold(
-        body: Container(
-      height: screen_height,
-      width: screen_width,
-      padding: const EdgeInsets.only(
-        top: 10,
-        left: 10,
-        right: 20,
-        bottom: 20,
-      ),
-      child: Column(
-        children: [
-          GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 4,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 20.0),
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return generic_card(stats['total_workouts'].toString(),
-                      'workouts completed this week');
-                }
-                if (index == 1) {
-                  return generic_card(
-                      stats['dominating_workout_week'].toString(),
-                      'Favorite workout this week');
-                }
-                if (index == 2) {
-                  return generic_card(stats['avg_week_calories'].toString(),
-                      'Average calories burned this week');
-                }
-                if (index == 3) {
-                  return generic_card(stats['avg_week_minutes'].toString(),
-                      'Average minutes spent this week');
-                }
-                return Container();
-              }),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
-              child: PieChart(
-                dataMap: workout_map.isEmpty ? {} : workout_map,
-              ),
+    return statsEmpty
+        ? Scaffold(
+            body: Center(
+              child: Text('No workouts logged, let\'s get started!'),
             ),
-          ),
-        ],
-      ),
-    ));
+          )
+        : Scaffold(
+            body: Container(
+            height: screen_height,
+            width: screen_width,
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 20,
+              bottom: 20,
+            ),
+            child: Column(
+              children: [
+                GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 4,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10.0,
+                            mainAxisSpacing: 20.0),
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return generic_card(stats['total_workouts'].toString(),
+                            'workouts completed this week');
+                      }
+                      if (index == 1) {
+                        return generic_card(
+                            stats['dominating_workout_week'].toString(),
+                            'Favorite workout this week');
+                      }
+                      if (index == 2) {
+                        return generic_card(
+                            stats['avg_week_calories'].toString(),
+                            'Average calories burned this week');
+                      }
+                      if (index == 3) {
+                        return generic_card(
+                            stats['avg_week_minutes'].toString(),
+                            'Average minutes spent this week');
+                      }
+                      return Container();
+                    }),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: PieChart(
+                      dataMap: workout_map.isEmpty ? {} : workout_map,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
   }
 
   Widget generic_card(String text1, String text2) {
@@ -358,7 +367,11 @@ class _WorkoutFeedState extends State<WorkoutFeed>
         .timeout(const Duration(seconds: 30), onTimeout: () {
       return http.Response('Server Timeout', 500);
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
+      statsEmpty = true;
+      statsReceived = true;
+      setState(() {});
+    } else if (response.statusCode == 200) {
       stats = (jsonDecode(response.body)['message']) as Map;
       for (var i in (stats['last_month_exe_prop'] as Map).keys) {
         workout_map[i] = stats['last_month_exe_prop'][i].toDouble();
