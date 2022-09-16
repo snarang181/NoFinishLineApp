@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
 import 'workoutFeed.dart';
+import 'workoutStats.dart';
 
 class NewWorkout extends StatefulWidget {
   const NewWorkout({Key? key}) : super(key: key);
@@ -146,7 +147,7 @@ class _NewWorkoutState extends State<NewWorkout> {
             ]));
   }
 
-  void log_workout_data() async {
+  Future<void> log_workout_data() async {
     showLoadingConst(context);
     data_received = false;
     final LocalStorage storage = LocalStorage('user_data');

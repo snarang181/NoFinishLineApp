@@ -5,6 +5,7 @@ import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:localstorage/localstorage.dart';
+import 'workoutStats.dart';
 
 class WorkoutFeed extends StatefulWidget {
   const WorkoutFeed({Key? key}) : super(key: key);
@@ -129,9 +130,12 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
                             ],
                           ),
                         ),
-                  Center(
-                    child: Text('Workout Stats Here'),
-                  ),
+                  workoutList.isEmpty
+                      ? const Center(
+                          child:
+                              Text('No workouts logged, let\'s get started!'),
+                        )
+                      : WorkoutStats(),
                 ],
               ),
             ),
