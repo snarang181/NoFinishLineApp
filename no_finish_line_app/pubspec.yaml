@@ -1,9 +1,19 @@
 name: no_finish_line_app
-description: A new Flutter project.
+description: A Flutter-based application used as a personal fitness logger.
 
 
 publish_to: 'none' 
 
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/
+
+flutter_icons:
+  image_path: "assets/images/no_end.png"
+  android: true
+  ios: true
 
 version: 1.0.0+1
 
@@ -13,8 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
   cupertino_icons: ^1.0.2
   loading_animation_widget: ^1.2.0+2
   http: ^0.13.5
@@ -29,8 +37,4 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   transition: ^2.0.2
-flutter:
-
-
-  uses-material-design: true
 

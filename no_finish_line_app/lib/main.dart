@@ -6,6 +6,7 @@ import '../pages/loginSignup.dart';
 import '../pages/forgotPassword.dart';
 import 'pages/workoutFeed.dart';
 import '../pages/newWorkout.dart';
+import '../pages/viewWorkout.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         "/forgotPassword": (BuildContext context) => const ForgotPassword(),
         "/workoutFeed": (BuildContext context) => const WorkoutFeed(),
         "/newWorkout": (BuildContext context) => const NewWorkout(),
+        "/viewWorkout": (BuildContext context) => const ViewWorkout(),
       },
     );
   }

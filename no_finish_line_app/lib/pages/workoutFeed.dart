@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:no_finish_line_app/pages/newWorkout.dart';
 import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,6 +25,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   double screen_width = 0.0;
   List workoutList = [];
   bool firstTemp = true;
+  Map arg = Map();
   late final _tabController = TabController(length: 2, vsync: this);
 
   var stats = {};
@@ -38,9 +40,9 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   Widget build(BuildContext context) {
     screen_height = MediaQuery.of(context).size.height;
     screen_width = MediaQuery.of(context).size.width;
+
     if (firstTemp) {
       Future.delayed(Duration.zero, () {
-        print('firstTemp');
         showLoadingConst(context);
         get_workout_past_data();
         firstTemp = false;
@@ -109,8 +111,8 @@ class _WorkoutFeedState extends State<WorkoutFeed>
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    String workout_id =
-                                        workoutList[index]['workout_id'];
+                                    Navigator.pushNamed(context, "/viewWorkout",
+                                        arguments: workoutList[index]);
                                   },
                                   onLongPress: () {
                                     _showCupertinoDialog(

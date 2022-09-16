@@ -75,7 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         Image.asset(
-          "/Users/samarthnarang/Desktop/NoFinishLineApp/no_finish_line_app/assets/images/no_end.jpeg",
+          'assets/images/no_end.jpeg',
+          // "../assets/images/no_end.jpeg",
           height: screen_height * 0.25,
         ),
         Container(

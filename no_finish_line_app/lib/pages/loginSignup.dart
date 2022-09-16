@@ -41,8 +41,8 @@ class _LoginSignupState extends State<LoginSignup> {
                     top: 60.0,
                     bottom: 30.0,
                   ),
-                  child: Image.asset(
-                      "/Users/samarthnarang/Desktop/NoFinishLineApp/no_finish_line_app/assets/images/no_end.jpeg",
+                  child: Image.asset('assets/images/no_end.jpeg',
+                      //
                       width: screen_width * 0.8),
                 ),
                 SizedBox(
