@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:no_finish_line_app/pages/loginScreen.dart';
+import 'package:no_finish_line_app/pages/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/createUser.dart';
 import '../utils/constants.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorObservers: [routeObserver],
-      home: user_id == null ? const LoginSignup() : const WorkoutFeed(),
+      home: Splash(),
       routes: {
         "/loginScreen": (context) => const LoginScreen(),
         "/createUser": (BuildContext context) => const CreateUser(),
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         "/workoutFeed": (BuildContext context) => const WorkoutFeed(),
         "/newWorkout": (BuildContext context) => const NewWorkout(),
         "/viewWorkout": (BuildContext context) => const ViewWorkout(),
+        "/splash": (BuildContext context) => const Splash(),
       },
     );
   }

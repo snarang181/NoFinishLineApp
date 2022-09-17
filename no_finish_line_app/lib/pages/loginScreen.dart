@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         Image.asset(
-          'assets/images/no_end.jpeg',
+          'assets/images/login.png',
           // "../assets/images/no_end.jpeg",
           height: screen_height * 0.25,
         ),

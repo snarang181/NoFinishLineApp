@@ -41,8 +41,7 @@ class _LoginSignupState extends State<LoginSignup> {
                     top: 60.0,
                     bottom: 30.0,
                   ),
-                  child: Image.asset('assets/images/no_end.jpeg',
-                      //
+                  child: Image.asset('assets/images/signup.png',
                       width: screen_width * 0.8),
                 ),
                 SizedBox(

@@ -41,7 +41,6 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   Widget build(BuildContext context) {
     screen_height = MediaQuery.of(context).size.height;
     screen_width = MediaQuery.of(context).size.width;
-
     if (firstTemp) {
       Future.delayed(Duration.zero, () {
         showLoadingConst(context);
@@ -112,9 +111,14 @@ class _WorkoutFeedState extends State<WorkoutFeed>
               !pastWorkoutsReceived
                   ? Container()
                   : workoutList.isEmpty
-                      ? const Center(
-                          child:
-                              Text('No workouts logged, let\'s get started!'),
+                      ? Column(
+                          children: [
+                            Image.asset('assets/images/splash.png'),
+                            const Center(
+                              child: Text(
+                                  'No workouts logged, let\'s get started!'),
+                            ),
+                          ],
                         )
                       : SingleChildScrollView(
                           physics: ScrollPhysics(),
@@ -170,9 +174,14 @@ class _WorkoutFeedState extends State<WorkoutFeed>
               !statsReceived
                   ? Container()
                   : workoutList.isEmpty
-                      ? const Center(
-                          child:
-                              Text('No workouts logged, let\'s get started!'),
+                      ? Column(
+                          children: [
+                            Image.asset('assets/images/stats.png'),
+                            const Center(
+                              child: Text(
+                                  'No workouts logged, let\'s get started!'),
+                            ),
+                          ],
                         )
                       : statsPage(),
             ],
