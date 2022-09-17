@@ -63,493 +63,500 @@ class _CreateUserState extends State<CreateUser> {
   Widget build(BuildContext context) {
     screen_height = MediaQuery.of(context).size.height;
     screen_width = MediaQuery.of(context).size.width;
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Create User"),
-          toolbarHeight: 0,
-          backgroundColor: THEME_COLOR,
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 20),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back_ios_new),
-                        color: THEME_COLOR,
-                        iconSize: 30,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: screen_height * 0.05,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'You are just getting started',
-                      style: TextStyle(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Create User"),
+            toolbarHeight: 0,
+            backgroundColor: THEME_COLOR,
+          ),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 20),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back_ios_new),
                           color: THEME_COLOR,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          fontFamily: "Lato"),
+                          iconSize: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: screen_height * 0.05,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'You are just getting started',
+                        style: TextStyle(
+                            color: THEME_COLOR,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontFamily: "Lato"),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 30, right: 30, top: 8),
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _firstNameController,
+                          onTap: () {
+                            onUsername = false;
+                            onPassword = false;
+                            setState(() {});
+                          },
+                          onFieldSubmitted: (text) {},
+                          onChanged: (text) {
+                            finalFirstName = text;
+                            validate_name(text);
+                            setState(() {});
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.person_add_alt_rounded,
+                              color: THEME_COLOR,
+                            ),
+                            labelText: "First Name",
+                            hintText: "Type your first name",
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _firstNameController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : nameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            labelStyle: const TextStyle(color: THEME_COLOR),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _firstNameController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : nameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 30, right: 30, top: 15),
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _lastNameController,
+                          onTap: () {
+                            onUsername = false;
+                            onPassword = false;
+                            setState(() {});
+                          },
+                          onFieldSubmitted: (text) {},
+                          onChanged: (text) {
+                            finalLastName = text;
+                            validate_lname(text);
+                            setState(() {});
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person_add,
+                                color: THEME_COLOR),
+                            labelText: "Last Name",
+                            hintText: "Type your last name",
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _lastNameController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : lastNameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            labelStyle: const TextStyle(
+                              color: THEME_COLOR,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _lastNameController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : lastNameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 30, right: 30, top: 15),
+                        child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onTap: () {
+                            setState(() {
+                              onUsername = true;
+                              onPassword = false;
+                            });
+                          },
+                          controller: _emailController,
+                          onFieldSubmitted: (text) {},
+                          onChanged: (text) {
+                            finalUsername = text;
+                            usernameValid = false;
+                            validate_username(text);
+                            // username_label = 2;
+                            setState(() {});
+                            usernameexists();
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.create_rounded,
+                              color: THEME_COLOR,
+                            ),
+                            labelText: "Email",
+                            hintText: "Enter your email",
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _emailController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : usernameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            labelStyle: const TextStyle(
+                              color: THEME_COLOR,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    color: _emailController.text.isEmpty
+                                        ? THEME_COLOR
+                                        : usernameValid
+                                            ? Colors.green
+                                            : Colors.red,
+                                    width: 2)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.red, width: 2)),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 35, right: 30, top: 2),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                            _emailController.text.isEmpty
+                                ? "Your username should be unique"
+                                : username_label == 0
+                                    ? "Username is not available"
+                                    : username_label == 1
+                                        ? "Username is available"
+                                        : "Checking...",
+                            style: TextStyle(
+                                color: _emailController.text.isEmpty
+                                    ? Colors.red
+                                    : username_label == 0
+                                        ? Colors.red
+                                        : username_label == 1
+                                            ? Colors.green
+                                            : Colors.black,
+                                fontSize: 12)),
+                      ],
                     ),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 30, right: 30, top: 8),
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        controller: _firstNameController,
-                        onTap: () {
-                          onUsername = false;
-                          onPassword = false;
-                          setState(() {});
-                        },
-                        onFieldSubmitted: (text) {},
-                        onChanged: (text) {
-                          finalFirstName = text;
-                          validate_name(text);
-                          setState(() {});
-                        },
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 15),
+                    child: TextFormField(
+                      onTap: () {
+                        onPassword = true;
+                        onUsername = false;
+                        setState(() {});
+                      },
+                      obscureText: _obscured,
+                      controller: _passwordController,
+                      onChanged: (text) {
+                        validPass1(text);
+                        validPass2(text);
+                        validPass3(text);
+                        validPass4(text);
+                        validPass5(text);
+                        validPass(text);
+                        setState(() {});
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
                           prefixIcon: const Icon(
-                            Icons.person_add_alt_rounded,
+                            Icons.password_rounded,
                             color: THEME_COLOR,
                           ),
-                          labelText: "First Name",
-                          hintText: "Type your first name",
-                          enabledBorder: OutlineInputBorder(
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                            child: GestureDetector(
+                              onTap: _toggleObscured,
+                              child: Icon(
+                                _obscured
+                                    ? Icons.visibility_rounded
+                                    : Icons.visibility_off_rounded,
+                                color: THEME_COLOR,
+                              ),
+                            ),
+                          ),
+                          labelText: "Password",
+                          hintText: "Type your password",
+                          errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                  color: _firstNameController.text.isEmpty
-                                      ? THEME_COLOR
-                                      : nameValid
-                                          ? Colors.green
-                                          : Colors.red,
-                                  width: 2)),
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 2)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.red, width: 2)),
                           labelStyle: const TextStyle(color: THEME_COLOR),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
-                                  color: _firstNameController.text.isEmpty
+                                  color: _passwordController.text.isEmpty
                                       ? THEME_COLOR
-                                      : nameValid
+                                      : passValid
                                           ? Colors.green
                                           : Colors.red,
                                   width: 2)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 30, right: 30, top: 15),
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        controller: _lastNameController,
-                        onTap: () {
-                          onUsername = false;
-                          onPassword = false;
-                          setState(() {});
-                        },
-                        onFieldSubmitted: (text) {},
-                        onChanged: (text) {
-                          finalLastName = text;
-                          validate_lname(text);
-                          setState(() {});
-                        },
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          prefixIcon:
-                              const Icon(Icons.person_add, color: THEME_COLOR),
-                          labelText: "Last Name",
-                          hintText: "Type your last name",
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
-                                  color: _lastNameController.text.isEmpty
+                                  color: _passwordController.text.isEmpty
                                       ? THEME_COLOR
-                                      : lastNameValid
+                                      : passValid
                                           ? Colors.green
                                           : Colors.red,
-                                  width: 2)),
-                          labelStyle: const TextStyle(
-                            color: THEME_COLOR,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                  color: _lastNameController.text.isEmpty
-                                      ? THEME_COLOR
-                                      : lastNameValid
-                                          ? Colors.green
-                                          : Colors.red,
-                                  width: 2)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                        ),
-                      ),
+                                  width: 2))),
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 30, right: 30, top: 15),
-                      child: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        onTap: () {
-                          setState(() {
-                            onUsername = true;
-                            onPassword = false;
-                          });
-                        },
-                        controller: _emailController,
-                        onFieldSubmitted: (text) {},
-                        onChanged: (text) {
-                          finalUsername = text;
-                          usernameValid = false;
-                          validate_username(text);
-                          // username_label = 2;
-                          setState(() {});
-                          usernameexists();
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.create_rounded,
-                            color: THEME_COLOR,
-                          ),
-                          labelText: "Email",
-                          hintText: "Enter your email",
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                  color: _emailController.text.isEmpty
-                                      ? THEME_COLOR
-                                      : usernameValid
-                                          ? Colors.green
-                                          : Colors.red,
-                                  width: 2)),
-                          labelStyle: const TextStyle(
-                            color: THEME_COLOR,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                  color: _emailController.text.isEmpty
-                                      ? THEME_COLOR
-                                      : usernameValid
-                                          ? Colors.green
-                                          : Colors.red,
-                                  width: 2)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35, right: 30, top: 2),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                          _emailController.text.isEmpty
-                              ? "Your username should be unique"
-                              : username_label == 0
-                                  ? "Username is not available"
-                                  : username_label == 1
-                                      ? "Username is available"
-                                      : "Checking...",
-                          style: TextStyle(
-                              color: _emailController.text.isEmpty
-                                  ? Colors.red
-                                  : username_label == 0
-                                      ? Colors.red
-                                      : username_label == 1
-                                          ? Colors.green
-                                          : Colors.black,
-                              fontSize: 12)),
-                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
-                  child: TextFormField(
-                    onTap: () {
-                      onPassword = true;
-                      onUsername = false;
-                      setState(() {});
-                    },
-                    obscureText: _obscured,
-                    controller: _passwordController,
-                    onChanged: (text) {
-                      validPass1(text);
-                      validPass2(text);
-                      validPass3(text);
-                      validPass4(text);
-                      validPass5(text);
-                      validPass(text);
-                      setState(() {});
-                    },
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
+                  onPassword
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 7, left: 0),
+                          child: Container(
+                            width: screen_width - 50,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                passCond1
+                                    ? showPasswordRules(0, Colors.green)
+                                    : showPasswordRules(0, Colors.red),
+                                passCond2
+                                    ? showPasswordRules(1, Colors.green)
+                                    : showPasswordRules(1, Colors.red),
+                                passCond3
+                                    ? showPasswordRules(2, Colors.green)
+                                    : showPasswordRules(2, Colors.red),
+                                passCond4
+                                    ? showPasswordRules(3, Colors.green)
+                                    : showPasswordRules(3, Colors.red),
+                                passCond5
+                                    ? showPasswordRules(4, Colors.green)
+                                    : showPasswordRules(4, Colors.red),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ))
+                      : SizedBox(
+                          height: 10,
+                        ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 15),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: _ageController,
+                      onTap: () {
+                        onPassword = false;
+                        onPassword = false;
+                        setState(() {});
+                      },
+                      onFieldSubmitted: (text) {},
+                      onChanged: (text) {
+                        setState(() {});
+                      },
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
                         prefixIcon: const Icon(
-                          Icons.password_rounded,
+                          Icons.cake_rounded,
                           color: THEME_COLOR,
                         ),
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                          child: GestureDetector(
-                            onTap: _toggleObscured,
-                            child: Icon(
-                              _obscured
-                                  ? Icons.visibility_rounded
-                                  : Icons.visibility_off_rounded,
-                              color: THEME_COLOR,
-                            ),
-                          ),
-                        ),
-                        labelText: "Password",
-                        hintText: "Type your password",
-                        errorBorder: OutlineInputBorder(
+                        labelText: "Age",
+                        hintText: "Enter your age",
+                        enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                const BorderSide(color: Colors.red, width: 2)),
-                        focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                const BorderSide(color: Colors.red, width: 2)),
+                            borderSide: BorderSide(
+                                color: _ageController.text.isEmpty
+                                    ? THEME_COLOR
+                                    : Colors.green,
+                                width: 2)),
                         labelStyle: const TextStyle(color: THEME_COLOR),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                                color: _passwordController.text.isEmpty
+                                color: _ageController.text.isEmpty
                                     ? THEME_COLOR
-                                    : passValid
-                                        ? Colors.green
-                                        : Colors.red,
+                                    : Colors.green,
                                 width: 2)),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 2)),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 2)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 15),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: _weightController,
+                      onTap: () {
+                        onPassword = false;
+                        onUsername = false;
+                        setState(() {});
+                      },
+                      onFieldSubmitted: (text) {},
+                      onChanged: (text) {
+                        setState(() {});
+                      },
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.monitor_weight_rounded,
+                          color: THEME_COLOR,
+                        ),
+                        labelText: "Weight",
+                        hintText: "Enter your weight (in lbs)",
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                                color: _passwordController.text.isEmpty
+                                color: _weightController.text.isEmpty
                                     ? THEME_COLOR
-                                    : passValid
-                                        ? Colors.green
-                                        : Colors.red,
-                                width: 2))),
+                                    : Colors.green,
+                                width: 2)),
+                        labelStyle: const TextStyle(color: THEME_COLOR),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                                color: _weightController.text.isEmpty
+                                    ? THEME_COLOR
+                                    : Colors.green,
+                                width: 2)),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 2)),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide:
+                                const BorderSide(color: Colors.red, width: 2)),
+                      ),
+                    ),
                   ),
-                ),
-                onPassword
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 7, left: 0),
-                        child: Container(
-                          width: screen_width - 50,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              passCond1
-                                  ? showPasswordRules(0, Colors.green)
-                                  : showPasswordRules(0, Colors.red),
-                              passCond2
-                                  ? showPasswordRules(1, Colors.green)
-                                  : showPasswordRules(1, Colors.red),
-                              passCond3
-                                  ? showPasswordRules(2, Colors.green)
-                                  : showPasswordRules(2, Colors.red),
-                              passCond4
-                                  ? showPasswordRules(3, Colors.green)
-                                  : showPasswordRules(3, Colors.red),
-                              passCond5
-                                  ? showPasswordRules(4, Colors.green)
-                                  : showPasswordRules(4, Colors.red),
-                              SizedBox(
-                                height: 5,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 30),
+                    child: TextButton(
+                      onPressed: () {
+                        save();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: THEME_COLOR,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Create Your Fitness Profile',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          ),
-                        ))
-                    : SizedBox(
-                        height: 10,
+                            )
+                          ],
+                        ),
                       ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    controller: _ageController,
-                    onTap: () {
-                      onPassword = false;
-                      onPassword = false;
-                      setState(() {});
-                    },
-                    onFieldSubmitted: (text) {},
-                    onChanged: (text) {
-                      setState(() {});
-                    },
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.cake_rounded,
-                        color: THEME_COLOR,
-                      ),
-                      labelText: "Age",
-                      hintText: "Enter your age",
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: _ageController.text.isEmpty
-                                  ? THEME_COLOR
-                                  : Colors.green,
-                              width: 2)),
-                      labelStyle: const TextStyle(color: THEME_COLOR),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: _ageController.text.isEmpty
-                                  ? THEME_COLOR
-                                  : Colors.green,
-                              width: 2)),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide:
-                              const BorderSide(color: Colors.red, width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide:
-                              const BorderSide(color: Colors.red, width: 2)),
+                      style: TextButton.styleFrom(
+                          alignment: Alignment.center,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: THEME_COLOR),
+                              borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: THEME_COLOR),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    controller: _weightController,
-                    onTap: () {
-                      onPassword = false;
-                      onUsername = false;
-                      setState(() {});
-                    },
-                    onFieldSubmitted: (text) {},
-                    onChanged: (text) {
-                      setState(() {});
-                    },
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.monitor_weight_rounded,
-                        color: THEME_COLOR,
-                      ),
-                      labelText: "Weight",
-                      hintText: "Enter your weight (in lbs)",
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: _weightController.text.isEmpty
-                                  ? THEME_COLOR
-                                  : Colors.green,
-                              width: 2)),
-                      labelStyle: const TextStyle(color: THEME_COLOR),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
-                              color: _weightController.text.isEmpty
-                                  ? THEME_COLOR
-                                  : Colors.green,
-                              width: 2)),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide:
-                              const BorderSide(color: Colors.red, width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide:
-                              const BorderSide(color: Colors.red, width: 2)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
-                  child: TextButton(
-                    onPressed: () {
-                      save();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: THEME_COLOR,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Create Your Fitness Profile',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                              textAlign: TextAlign.center,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    style: TextButton.styleFrom(
-                        alignment: Alignment.center,
-                        shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: THEME_COLOR),
-                            borderRadius: BorderRadius.circular(10)),
-                        backgroundColor: THEME_COLOR),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Future<void> save() async {

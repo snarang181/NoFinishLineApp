@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -378,8 +379,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context);
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
-
         await storage.setItem('user_id', jsonDecode(response.body)['userID']);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_id', jsonDecode(response.body)['userID']);
         await storage.setItem(
             'auth_token', jsonDecode(response.body)['auth_token']);
         Navigator.popAndPushNamed(context, "/workoutFeed",

@@ -29,6 +29,7 @@ dependencies:
   localstorage: ^4.0.0+1
   pie_chart: ^5.3.2
   firebase_core: ^1.22.0
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:no_finish_line_app/pages/newWorkout.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -48,116 +49,135 @@ class _WorkoutFeedState extends State<WorkoutFeed>
         firstTemp = false;
       });
     }
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: THEME_COLOR,
-          toolbarHeight: 0,
-          bottom: TabBar(
-            isScrollable: true,
-            onTap: (value) {
-              _tabController.index = value;
-              if (value == 0) {
-                showLoadingConst(context);
-                get_workout_past_data();
-              } else if (value == 1) {
-                showLoadingConst(context);
-                get_workout_stats();
-              }
-            },
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: THEME_COLOR,
+            toolbarHeight: 0,
+            bottom: TabBar(
+              isScrollable: true,
+              onTap: (value) {
+                _tabController.index = value;
+                if (value == 0) {
+                  showLoadingConst(context);
+                  get_workout_past_data();
+                } else if (value == 1) {
+                  showLoadingConst(context);
+                  get_workout_stats();
+                }
+              },
+              controller: _tabController,
+              tabs: const [
+                Tab(
+                  text: 'Workout History',
+                ),
+                Tab(
+                  text: 'Workout Stats',
+                ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding:
+                const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FloatingActionButton(
+                  heroTag: "logout",
+                  backgroundColor: THEME_COLOR,
+                  onPressed: () {
+                    setState(() {});
+                    logout();
+                    Navigator.popAndPushNamed(context, "/loginSignup");
+                  },
+                  child: const Icon(Icons.logout_rounded),
+                ),
+                FloatingActionButton(
+                  heroTag: "addWorkout",
+                  backgroundColor: THEME_COLOR,
+                  onPressed: () {
+                    setState(() {});
+                    Navigator.pushNamed(context, "/newWorkout");
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
             controller: _tabController,
-            tabs: const [
-              Tab(
-                text: 'Workout History',
-              ),
-              Tab(
-                text: 'Workout Stats',
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FloatingActionButton(
-                backgroundColor: THEME_COLOR,
-                onPressed: () {
-                  setState(() {});
-                  Navigator.pushNamed(context, "/newWorkout");
-                },
-                child: const Icon(Icons.add),
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            !pastWorkoutsReceived
-                ? Container()
-                : workoutList.isEmpty
-                    ? const Center(
-                        child: Text('No workouts logged, let\'s get started!'),
-                      )
-                    : SingleChildScrollView(
-                        physics: ScrollPhysics(),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: workoutList.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, "/viewWorkout",
-                                        arguments: workoutList[index]);
-                                  },
-                                  onLongPress: () {
-                                    _showCupertinoDialog(
-                                        workoutList[index]['workout_id'],
-                                        index);
-                                  },
-                                  child: Card(
-                                    elevation: 5.0,
-                                    child: ListTile(
-                                      title: Text(
-                                        workoutList[index]['workout_name'],
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold),
+              !pastWorkoutsReceived
+                  ? Container()
+                  : workoutList.isEmpty
+                      ? const Center(
+                          child:
+                              Text('No workouts logged, let\'s get started!'),
+                        )
+                      : SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: workoutList.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, "/viewWorkout",
+                                          arguments: workoutList[index]);
+                                    },
+                                    onLongPress: () {
+                                      _showCupertinoDialog(
+                                          workoutList[index]['workout_id'],
+                                          index);
+                                    },
+                                    child: Card(
+                                      elevation: 5.0,
+                                      child: ListTile(
+                                        title: Text(
+                                          workoutList[index]['workout_name'],
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Text(workoutList[index]
+                                                    ['workout_date']
+                                                .split(" ")[0] +
+                                            " " +
+                                            "Calories: " +
+                                            workoutList[index]
+                                                    ['workout_calories_burnt']
+                                                .toString() +
+                                            " " +
+                                            "Duration: " +
+                                            workoutList[index]
+                                                    ['workout_duration']
+                                                .toString() +
+                                            " minutes"),
                                       ),
-                                      subtitle: Text(workoutList[index]
-                                                  ['workout_date']
-                                              .split(" ")[0] +
-                                          " " +
-                                          "Calories: " +
-                                          workoutList[index]
-                                                  ['workout_calories_burnt']
-                                              .toString() +
-                                          " " +
-                                          "Duration: " +
-                                          workoutList[index]['workout_duration']
-                                              .toString() +
-                                          " minutes"),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-            !statsReceived
-                ? Container()
-                : workoutList.isEmpty
-                    ? const Center(
-                        child: Text('No workouts logged, let\'s get started!'),
-                      )
-                    : statsPage(),
-          ],
-        ));
+              !statsReceived
+                  ? Container()
+                  : workoutList.isEmpty
+                      ? const Center(
+                          child:
+                              Text('No workouts logged, let\'s get started!'),
+                        )
+                      : statsPage(),
+            ],
+          )),
+    );
   }
 
   void get_workout_past_data() async {
@@ -348,6 +368,11 @@ class _WorkoutFeedState extends State<WorkoutFeed>
         ],
       ),
     );
+  }
+
+  void logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('user_id');
   }
 
   Future<void> get_workout_stats() async {

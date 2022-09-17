@@ -37,119 +37,130 @@ class _ViewWorkoutState extends State<ViewWorkout> {
               child: CircularProgressIndicator(color: THEME_COLOR),
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              backgroundColor: THEME_COLOR,
-              title: const Text('Update Workout'),
-            ),
-            body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30.0,
-                      left: 10.0,
-                      right: 10.0,
-                      bottom: 10.0,
-                    ),
-                    child: TextField(
-                      controller: _workoutName,
-                      decoration: const InputDecoration(
-                        labelText: 'Workout Name',
-                        labelStyle: TextStyle(color: THEME_COLOR),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                      ),
-                    ),
+        : WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: _workoutDuration,
-                      decoration: const InputDecoration(
-                        labelText: 'Workout Duration (in mins)',
-                        labelStyle: TextStyle(color: THEME_COLOR),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: _workoutCalories,
-                      decoration: const InputDecoration(
-                        labelText: 'Calories Burned',
-                        labelStyle: TextStyle(color: THEME_COLOR),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      controller: _workoutDescription,
-                      decoration: const InputDecoration(
-                        labelText: 'Workout Notes (optional)',
-                        labelStyle: TextStyle(color: THEME_COLOR),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: THEME_COLOR),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
+                  backgroundColor: THEME_COLOR,
+                  title: const Text('Update Workout'),
+                ),
+                body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.all(25),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: THEME_COLOR,
-                            onPrimary: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 30.0,
+                          left: 10.0,
+                          right: 10.0,
+                          bottom: 10.0,
+                        ),
+                        child: TextField(
+                          controller: _workoutName,
+                          decoration: const InputDecoration(
+                            labelText: 'Workout Name',
+                            labelStyle: TextStyle(color: THEME_COLOR),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
                             ),
                           ),
-                          child: const Text(
-                            'Update Workout',
-                            style: TextStyle(fontSize: 15.0),
-                          ),
-                          onPressed: () {
-                            update_workout();
-                          },
                         ),
                       ),
-                    ],
-                  )
-                ]));
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: _workoutDuration,
+                          decoration: const InputDecoration(
+                            labelText: 'Workout Duration (in mins)',
+                            labelStyle: TextStyle(color: THEME_COLOR),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          controller: _workoutCalories,
+                          decoration: const InputDecoration(
+                            labelText: 'Calories Burned',
+                            labelStyle: TextStyle(color: THEME_COLOR),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          controller: _workoutDescription,
+                          decoration: const InputDecoration(
+                            labelText: 'Workout Notes (optional)',
+                            labelStyle: TextStyle(color: THEME_COLOR),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(25),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: THEME_COLOR,
+                                onPrimary: Colors.white,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                              ),
+                              child: const Text(
+                                'Update Workout',
+                                style: TextStyle(fontSize: 15.0),
+                              ),
+                              onPressed: () {
+                                update_workout();
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    ])),
+          );
   }
 
   Future<void> update_workout() async {
