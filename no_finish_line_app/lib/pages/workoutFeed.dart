@@ -24,9 +24,17 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   double screen_height = 0.0;
   double screen_width = 0.0;
   List workoutList = [];
+  TextEditingController _workoutSearch = TextEditingController();
+  TextEditingController _workoutLevel = TextEditingController();
+  TextEditingController _workoutGroups = TextEditingController();
+  TextEditingController _workoutType = TextEditingController();
+  TextEditingController _workoutInstructions = TextEditingController();
+
+  bool workoutAPIRecvd = false;
+
   bool firstTemp = true;
   Map arg = Map();
-  late final _tabController = TabController(length: 2, vsync: this);
+  late final _tabController = TabController(length: 3, vsync: this);
 
   var stats = {};
   bool statsReceived = false;
@@ -57,6 +65,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
             bottom: TabBar(
               isScrollable: true,
               onTap: (value) {
+                empty_controllers();
                 _tabController.index = value;
                 if (value == 0) {
                   showLoadingConst(context);
@@ -74,6 +83,9 @@ class _WorkoutFeedState extends State<WorkoutFeed>
                 Tab(
                   text: 'Workout Stats',
                 ),
+                Tab(
+                  text: 'Workout Database',
+                )
               ],
             ),
           ),
@@ -184,9 +196,190 @@ class _WorkoutFeedState extends State<WorkoutFeed>
                           ],
                         )
                       : statsPage(),
+              database_search(),
             ],
           )),
     );
+  }
+
+  Widget database_search() {
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: THEME_COLOR,
+            title: const Text('Workout Database'),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    width: 400,
+                    child: Autocomplete<Object>(
+                      initialValue: TextEditingValue(
+                          text: _workoutSearch.text.toString()),
+                      onSelected: (value) {
+                        setState(() {
+                          _workoutSearch.text = value.toString();
+                        });
+                        showLoadingConst(context);
+                        get_single_workout_data();
+                      },
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        return workouts
+                            .where((suggestion) =>
+                                (suggestion.toLowerCase().contains(
+                                    textEditingValue.text.toLowerCase())) ||
+                                (suggestion.toLowerCase().startsWith(
+                                    textEditingValue.text.toLowerCase())))
+                            .toList();
+                      },
+                      displayStringForOption: (option) => option.toString(),
+                      fieldViewBuilder: (
+                        BuildContext context,
+                        TextEditingController fieldTextEditingController,
+                        FocusNode fieldFocusNode,
+                        VoidCallback onFieldSubmitted,
+                      ) {
+                        return TextField(
+                          controller: fieldTextEditingController,
+                          focusNode: fieldFocusNode,
+                          decoration: InputDecoration(
+                            labelText: !workoutAPIRecvd
+                                ? 'Start typing to search'
+                                : 'Workout Name',
+                            labelStyle: TextStyle(color: THEME_COLOR),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 3, color: THEME_COLOR),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: _workoutLevel,
+                    decoration: const InputDecoration(
+                      labelText: 'Workout Level',
+                      labelStyle: TextStyle(color: THEME_COLOR),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: _workoutGroups,
+                    decoration: const InputDecoration(
+                      labelText: 'Muscle Groups Targeted',
+                      labelStyle: TextStyle(color: THEME_COLOR),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: _workoutType,
+                    decoration: const InputDecoration(
+                      labelText: 'Workout Category',
+                      labelStyle: TextStyle(color: THEME_COLOR),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    maxLines: null,
+                    controller: _workoutInstructions,
+                    decoration: const InputDecoration(
+                      labelText: 'How do you do it?',
+                      labelStyle: TextStyle(color: THEME_COLOR),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: THEME_COLOR),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  void empty_controllers() {
+    _workoutSearch.clear();
+    _workoutLevel.clear();
+    _workoutGroups.clear();
+    _workoutType.clear();
+    _workoutInstructions.clear();
+    workoutAPIRecvd = false;
+    setState(() {});
+  }
+
+  void get_single_workout_data() async {
+    final LocalStorage storage = LocalStorage('user_data');
+    await storage.ready;
+    String user_id = storage.getItem('user_id');
+    final http.Response response = await http
+        .post(Uri.parse(API_BASE_URL + '/user/workout_details'),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(<String, String>{
+              'auth_key': API_AUTH_KEY,
+              'workout_name': _workoutSearch.text.toString(),
+            }))
+        .timeout(const Duration(seconds: 30), onTimeout: () {
+      return http.Response('Server Timeout', 500);
+    });
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['message'];
+      _workoutLevel.text = data['level'];
+      _workoutGroups.text = data['Muscle Groups'];
+      _workoutType.text = data['category'];
+      _workoutInstructions.text = data['instructions'];
+      workoutAPIRecvd = true;
+      setState(() {});
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Could not fetch workout data, please try again later'),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    Navigator.pop(context);
   }
 
   void get_workout_past_data() async {

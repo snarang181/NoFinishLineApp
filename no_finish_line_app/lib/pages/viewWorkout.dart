@@ -56,25 +56,53 @@ class _ViewWorkoutState extends State<ViewWorkout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                          top: 30.0,
-                          left: 10.0,
-                          right: 10.0,
-                          bottom: 10.0,
-                        ),
-                        child: TextField(
-                          controller: _workoutName,
-                          decoration: const InputDecoration(
-                            labelText: 'Workout Name',
-                            labelStyle: TextStyle(color: THEME_COLOR),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: THEME_COLOR),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: THEME_COLOR),
-                            ),
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          width: 400,
+                          child: Autocomplete<Object>(
+                            initialValue: TextEditingValue(
+                                text: _workoutName.text.toString()),
+                            onSelected: (value) {
+                              setState(() {
+                                _workoutName.text = value.toString();
+                              });
+                            },
+                            optionsBuilder:
+                                (TextEditingValue textEditingValue) {
+                              return workouts
+                                  .where((suggestion) =>
+                                      (suggestion.toLowerCase().contains(
+                                          textEditingValue.text
+                                              .toLowerCase())) ||
+                                      (suggestion.toLowerCase().startsWith(
+                                          textEditingValue.text.toLowerCase())))
+                                  .toList();
+                            },
+                            displayStringForOption: (option) =>
+                                option.toString(),
+                            fieldViewBuilder: (
+                              BuildContext context,
+                              TextEditingController fieldTextEditingController,
+                              FocusNode fieldFocusNode,
+                              VoidCallback onFieldSubmitted,
+                            ) {
+                              return TextField(
+                                controller: fieldTextEditingController,
+                                focusNode: fieldFocusNode,
+                                decoration: const InputDecoration(
+                                  labelText: 'Workout Name',
+                                  labelStyle: TextStyle(color: THEME_COLOR),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 3, color: THEME_COLOR),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 3, color: THEME_COLOR),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
