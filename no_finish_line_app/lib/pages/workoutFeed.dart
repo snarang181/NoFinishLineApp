@@ -207,10 +207,11 @@ class _WorkoutFeedState extends State<WorkoutFeed>
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: THEME_COLOR,
-            title: const Text('Workout Database'),
-          ),
+          // appBar: AppBar(
+          //   automaticallyImplyLeading: false,
+          //   backgroundColor: THEME_COLOR,
+          //   title: const Text('Workout Database'),
+          // ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +251,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
                           focusNode: fieldFocusNode,
                           decoration: InputDecoration(
                             labelText: !workoutAPIRecvd
-                                ? 'Start typing to search'
+                                ? 'Start typing to search for a workout'
                                 : 'Workout Name',
                             labelStyle: TextStyle(color: THEME_COLOR),
                             enabledBorder: OutlineInputBorder(
