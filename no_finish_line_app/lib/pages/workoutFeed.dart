@@ -60,6 +60,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
       onWillPop: () async => false,
       child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: THEME_COLOR,
             toolbarHeight: 0,
             bottom: TabBar(
