@@ -30,6 +30,8 @@ void showLoadingConst(context) {
 }
 
 List<String> workouts = [
+  'Calisthenics',
+  'Weight Training',
   'Internal Rotation with Band',
   'Spinal Stretch',
   'Extended Range One-Arm Kettlebell Floor Press',
