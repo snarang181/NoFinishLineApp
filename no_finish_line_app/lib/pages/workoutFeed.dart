@@ -39,6 +39,7 @@ class _WorkoutFeedState extends State<WorkoutFeed>
   var stats = {};
   bool statsReceived = false;
   bool statsEmpty = false;
+  bool statsPastWeekEmpty = false;
   bool pastWorkoutsReceived = false;
   Map<String, double> workout_map = {};
 
@@ -207,15 +208,17 @@ class _WorkoutFeedState extends State<WorkoutFeed>
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          // appBar: AppBar(
-          //   automaticallyImplyLeading: false,
-          //   backgroundColor: THEME_COLOR,
-          //   title: const Text('Workout Database'),
-          // ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: Container(
+                    child: Image.asset('assets/images/splash.png'),
+                    height: screen_height * 0.3,
+                    width: screen_width * 0.8,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -490,60 +493,68 @@ class _WorkoutFeedState extends State<WorkoutFeed>
               child: Text('No workouts logged, let\'s get started!'),
             ),
           )
-        : Scaffold(
-            body: Container(
-            height: screen_height,
-            width: screen_width,
-            padding: const EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 20,
-              bottom: 20,
-            ),
-            child: Column(
-              children: [
-                GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 4,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10.0,
-                            mainAxisSpacing: 20.0),
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return generic_card(stats['total_workouts'].toString(),
-                            'workouts completed this week');
-                      }
-                      if (index == 1) {
-                        return generic_card(
-                            stats['dominating_workout_week'].toString(),
-                            'Favorite workout this week');
-                      }
-                      if (index == 2) {
-                        return generic_card(
-                            stats['avg_week_calories'].toString(),
-                            'Average calories burned this week');
-                      }
-                      if (index == 3) {
-                        return generic_card(
-                            stats['avg_week_minutes'].toString(),
-                            'Average minutes spent this week');
-                      }
-                      return Container();
-                    }),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: PieChart(
-                      dataMap: workout_map.isEmpty ? {} : workout_map,
-                    ),
-                  ),
+        : statsPastWeekEmpty
+            ? Scaffold(
+                body: Center(
+                  child: Text(
+                      'No workouts logged in the past week, let\'s get going!'),
                 ),
-              ],
-            ),
-          ));
+              )
+            : Scaffold(
+                body: Container(
+                height: screen_height,
+                width: screen_width,
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 20,
+                  bottom: 20,
+                ),
+                child: Column(
+                  children: [
+                    GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 4,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10.0,
+                                mainAxisSpacing: 20.0),
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return generic_card(
+                                stats['total_workouts'].toString(),
+                                'workouts completed this week');
+                          }
+                          if (index == 1) {
+                            return generic_card(
+                                stats['dominating_workout_week'].toString(),
+                                'Favorite workout this week');
+                          }
+                          if (index == 2) {
+                            return generic_card(
+                                stats['avg_week_calories'].toString(),
+                                'Average calories burned this week');
+                          }
+                          if (index == 3) {
+                            return generic_card(
+                                stats['avg_week_minutes'].toString(),
+                                'Average minutes spent this week');
+                          }
+                          return Container();
+                        }),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: PieChart(
+                          dataMap: workout_map.isEmpty ? {} : workout_map,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
   }
 
   Widget generic_card(String text1, String text2) {
@@ -596,7 +607,13 @@ class _WorkoutFeedState extends State<WorkoutFeed>
         .timeout(const Duration(seconds: 30), onTimeout: () {
       return http.Response('Server Timeout', 500);
     });
-    if (response.statusCode == 201) {
+
+    if (response.statusCode == 202) {
+      statsPastWeekEmpty = true;
+      statsEmpty = false;
+      statsReceived = true;
+      setState(() {});
+    } else if (response.statusCode == 201) {
       statsEmpty = true;
       statsReceived = true;
       setState(() {});
