@@ -1,16 +1,35 @@
-# no_finish_line_app
+# NoFinishLineApp
 
-A new Flutter project.
+NoFinishLineApp is a mobile application that allows users to track their workouts from a vast database of exercises. In the workout logging process, users can log their notes and calories burnt during the workout. The application also allows users to view their workout history and compare their progress over time. 
 
-## Getting Started
+Also, for users new to the gym, the application provides a Workout Database which allows a user to search for a particular exercise. After selecting an exercise, the user can view the workout level, muscle groups targeted, and the know how to perform the exercise. 
 
-This project is a starting point for a Flutter application.
+## Technologies Used
 
-A few resources to get you started if this is your first Flutter project:
+### Mobile Application
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Flutter
+* Dart
+* Firebase
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Backend and Database 
+
+* Flask (Python) Framework for REST API performing CRUD operations
+* AWS DynamoDB for storing user data and workout history
+* Server setup on Heroku
+
+The source code for the [backend repository](https://github.com/snarang181/NoFinishLineAPI) is available here.
+
+## Screenshots
+
+### Log a New Workout
+
+![Log a New Workout](assets/readme_assets/log_new_workout.PNG)
+
+### View Workout History
+
+![View Workout History](assets/readme_assets/workout_history.PNG)
+
+### Workout Database 
+
+![Workout Database](assets/readme_assets/workout_search.PNG)
